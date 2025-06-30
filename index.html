@@ -1,0 +1,154 @@
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>90'lar Nostalji Testi</title>
+  <style>
+    body {
+      background-color: #fbeec1;
+      font-family: 'Courier New', Courier, monospace;
+      color: #4b3832;
+      padding: 2rem;
+      max-width: 600px;
+      margin: auto;
+    }
+    .question {
+      margin-bottom: 1.5rem;
+    }
+    button {
+      margin: 0.25rem 0;
+      padding: 0.5rem 1rem;
+      border: none;
+      background-color: #d2691e;
+      color: white;
+      cursor: pointer;
+      border-radius: 8px;
+    }
+    button:hover {
+      background-color: #8b4513;
+    }
+    #result {
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin-top: 2rem;
+      white-space: pre-wrap;
+    }
+    audio {
+      display: block;
+      margin: 1rem auto;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎩 90'lar Nostalji Testi</h1>
+  <p>
+    Şimdi seni, tozlu kasetlerin, gazoz kapağı savaşlarının ve mahalle bakkalının renkli raflarının arasında kısa bir yolculuğa çıkarıyoruz.
+    Hazırsan, çocukluğuna kısa bir yolculuk başlıyor... 🎿 Teybi play’e bastık, kaset dönmeye başladı...
+  </p>
+  <audio autoplay controls>
+    <source src="giris_jenerik.mp3" type="audio/mp3">
+  </audio>
+
+  <div id="quiz"></div>
+  <div id="result"></div>
+
+  <script>
+    const questions = [
+      {
+        question: "90’larda kaset çalar (Walkman) kullanan biri, kaset takıldıysa ne yapardı?",
+        answers: ["Kaseti ısıtırdı", "Kalemle sarardı", "Üflerdi", "Ters çevirirdi"],
+        correct: 1
+      },
+      {
+        question: "Mahallenin Muhtarları dizisinde Temel karakterini kim oynuyordu?",
+        answers: ["Erdal Özyağcılar", "Bekir Aksoy", "Alişan", "Yalçın Menteş"],
+        correct: 0
+      },
+      {
+        question: "Hangisi 90’larda çocukların en çok oynadığı sokak oyunlarından biri değildi?",
+        answers: ["Mendil kapmaca", "Yakan top", "Candy Crush", "Sek sek"],
+        correct: 2
+      },
+      {
+        question: "Taso savaşlarında en çok tercih edilen içecek hangisinin kapağından çıkardı?",
+        answers: ["Fanta", "Pepsi", "Cola Turka", "Uludağ Gazozu"],
+        correct: 1
+      },
+      {
+        question: "90’ların en meşhur sabah çocuk programı sunucularından biri kimdi?",
+        answers: ["Orhan Gencebay", "Tayfun Talipoğlu", "Alp Kırşan", "Banu Alkan"],
+        correct: 2
+      },
+      {
+        question: "Hangisi 90’ların efsane abur cuburlarındandır?",
+        answers: ["Dido", "Cin Bon", "Dankek", "Eti Browni Gold"],
+        correct: 1
+      },
+      {
+        question: "90’larda Atari salonlarında jetonla oynanan oyunlardan biri aşağıdakilerden hangisidir?",
+        answers: ["PUBG", "Mortal Kombat", "Valorant", "Among Us"],
+        correct: 1
+      }
+    ];
+
+    let current = 0;
+    let score = 0;
+    const quiz = document.getElementById("quiz");
+    const result = document.getElementById("result");
+
+    function showQuestion() {
+      if (current >= questions.length) {
+        showResult();
+        return;
+      }
+      const q = questions[current];
+      quiz.innerHTML = `<div class="question">
+        <h3>Soru ${current + 1}:</h3>
+        <p>${q.question}</p>
+        ${q.answers.map((a, i) => `<button onclick="checkAnswer(${i})">${a}</button>`).join("<br>")}
+      </div>`;
+    }
+
+    function checkAnswer(index) {
+      const correct = questions[current].correct;
+      if (index === correct) {
+        score++;
+        new Audio("dogru_cevap.mp3").play();
+      } else {
+        new Audio("yanlis_cevap.mp3").play();
+      }
+      current++;
+      setTimeout(showQuestion, 800);
+    }
+
+    function showResult() {
+      quiz.innerHTML = "";
+      let message = "";
+      if (score >= 6) {
+        message = `🥇 Mahalle Şampiyonu!
+Sen tam bir mahalle efsanesisin!
+Tipitip koleksiyonun hâlâ duruyordur belki.
+Atari salonunda 1 jetonla 5 tur dönen çocuklardansın.
+Gururla paylaş bu sonucu: Mahalle seni özlemiş!`;
+      } else if (score >= 4) {
+        message = `🥈 Tozlu Hatıralar Canlandı!
+Bazı anılar biraz silik belki ama hâlâ kalbindeler.
+Yakar topu unutmuş olabilirsin ama Cin Bon’un tadı damağında.
+Biraz pas tutmuş olsan da hâlâ oyunun içindesin!`;
+      } else {
+        message = `🥉 Yeni Mahalleli!
+Belki de sen daha genç kuşaksın... ya da o günler sana uzaktı.
+Ama merak etme, şimdi o sokaklara adım attın.
+Nostalji sadece yaş değil, ruhtur! Hoş geldin aramıza 💛`;
+      }
+      result.textContent = `Doğru Sayısı: ${score}/7
+
+${message}`;
+    }
+
+    showQuestion();
+  </script>
+</body>
+</html>
